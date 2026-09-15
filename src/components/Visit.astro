@@ -162,24 +162,26 @@
   }
 
   .visit__hours {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 1.5rem;
+    row-gap: 0.4rem;
     margin: 0;
-  }
-
-  .visit__hours-row {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 0.4rem;
     font-size: 0.9375rem;
   }
 
+  .visit__hours-row {
+    display: contents;
+  }
+
   .visit__hours-row dt {
-    min-width: 155px;
     color: var(--color-charcoal-soft);
   }
 
   .visit__hours-row dd {
     margin: 0;
     color: var(--color-charcoal);
+    font-variant-numeric: tabular-nums;
   }
 
   .visit__actions {
@@ -232,6 +234,10 @@
     .visit__map {
       grid-column: 1;
       grid-row: auto;
+    }
+
+    .visit__map {
+      margin-top: 2.25rem;
     }
 
     .visit__map img {
