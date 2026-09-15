@@ -1,4 +1,6 @@
 ---
+import BrandMark from "./BrandMark.astro";
+
 interface Props {
   solid?: boolean;
 }
@@ -8,9 +10,7 @@ const { solid = false } = Astro.props;
 
 <header class:list={["site-nav", { scrolled: solid }]} id="site-nav" data-nav-solid={solid ? "" : undefined} role="banner">
   <div class="nav-inner">
-    <a href="/" class="nav-logo" aria-label="Restaurace Viktoria — domovská stránka">
-      Viktoria
-    </a>
+    <BrandMark class="nav-logo" />
 
     <nav class="nav-links" aria-label="Hlavní navigace">
       <a href="/menu">Menu</a>
@@ -76,21 +76,13 @@ const { solid = false } = Astro.props;
     padding: 1.375rem clamp(1.5rem, 5vw, 4rem);
   }
 
-  .nav-logo {
-    font-family: var(--font-serif);
+  .nav-inner :global(.nav-logo) {
     font-size: 1.5rem;
-    font-style: normal;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
     color: var(--color-cream);
-    text-decoration: none;
-    letter-spacing: 0.03em;
     transition: color 0.35s ease;
-    line-height: 1;
   }
 
-  .site-nav.scrolled .nav-logo {
+  .site-nav.scrolled :global(.nav-logo) {
     color: var(--color-charcoal);
   }
 

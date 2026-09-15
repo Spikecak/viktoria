@@ -1,0 +1,57 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={["brand-mark", className]}
+  aria-label="Restaurace Viktoria — domovská stránka"
+>
+  <span class="brand-mark__main" aria-hidden="true">Viktoria</span>
+  <span class="brand-mark__sub" aria-hidden="true">
+    {"Restaurant".split("").map((letter) => (
+      <span>{letter}</span>
+    ))}
+  </span>
+</a>
+
+<style>
+  .brand-mark {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: max-content;
+    text-decoration: none;
+    color: inherit;
+    line-height: 1;
+  }
+
+  .brand-mark__main {
+    font-family: var(--font-serif);
+    font-size: 1em;
+    font-weight: 500;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 0.9;
+    margin-right: -0.03em;
+  }
+
+  .brand-mark__sub {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 0.42em;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    line-height: 1;
+    opacity: 0.75;
+    padding-top: 0.38em;
+  }
+</style>

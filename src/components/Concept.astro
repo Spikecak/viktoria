@@ -23,7 +23,7 @@
 
       <div class="concept__images" aria-hidden="true">
         <div class="concept__img concept__img--1" data-reveal data-reveal-delay="1">
-          <div class="parallax-media" data-parallax="7">
+          <div class="concept__shift" data-meet-shift="1">
             <img
               src="https://images.unsplash.com/photo-1576402187878-974f70c890a5?w=900&q=80&auto=format&fit=crop"
               alt="Varenyky — tradiční ručně vyráběné ukrajinské knedlíky"
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="concept__img concept__img--2" data-reveal data-reveal-delay="2">
-          <div class="parallax-media" data-parallax="10">
+          <div class="concept__shift" data-meet-shift="-1">
             <img
               src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80&auto=format&fit=crop"
               alt="Čerstvý domácí chléb pečený v restauraci"
@@ -90,10 +90,19 @@
     grid-template-columns: 5fr 4fr;
     gap: 1.25rem;
     align-items: start;
+    overflow: visible;
   }
 
   .concept__img {
+    position: relative;
+    overflow: visible;
+  }
+
+  .concept__shift {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
+    will-change: transform;
   }
 
   .concept__img img {
@@ -135,3 +144,43 @@
     }
   }
 </style>
+
+<script>
+  const section = document.querySelector(".concept") as HTMLElement | null;
+  const shifts = section
+    ? ([...section.querySelectorAll("[data-meet-shift]")] as HTMLElement[])
+    : [];
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (section && shifts.length && !reduced) {
+    const travel = () => 2.75 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+    const update = () => {
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      const dist = travel();
+      let t = 0;
+
+      if (rect.height >= viewH) {
+        const range = (viewH + rect.height) / 2 || 1;
+        t = Math.max(-1, Math.min(1, (viewH / 2 - (rect.top + rect.height / 2)) / range));
+      } else {
+        const fullyBottom = viewH - rect.height;
+        if (rect.top > fullyBottom) {
+          t = -Math.min(1, (rect.top - fullyBottom) / rect.height);
+        } else if (rect.top < 0) {
+          t = Math.min(1, -rect.top / rect.height);
+        }
+      }
+
+      for (const el of shifts) {
+        const dir = Number(el.dataset.meetShift) || 1;
+        el.style.transform = `translate3d(0, ${t * dir * dist}px, 0)`;
+      }
+    };
+
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    update();
+  }
+</script>

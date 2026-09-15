@@ -28,6 +28,11 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <script is:inline>
+      if (location.hash && "scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+    </script>
   </head>
   <body>
     <Nav solid={navSolid} />
@@ -87,6 +92,169 @@ const {
         );
         window.addEventListener("resize", updateParallax, { passive: true });
         updateParallax();
+      }
+
+      const navEl = document.getElementById("site-nav");
+      const WHEEL_SCALE = 0.90;
+      const LERP = 0.06875;
+      const keys = new Set(["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "]);
+
+      let currentY = window.scrollY;
+      let targetY = window.scrollY;
+      let scrolling = false;
+      let hashScroll = false;
+      let hashOrigin = 0;
+      let hashT0 = 0;
+      let hashDuration = 0;
+
+      const maxY = () =>
+        Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+
+      const easeInOutCubic = (t: number) =>
+        t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+
+      const lockY = (el: Element) => {
+        const content =
+          el.querySelector(":scope > .site-container") ??
+          el.querySelector(".site-container") ??
+          el;
+        const navH = navEl?.getBoundingClientRect().height ?? 72;
+        const y =
+          content.getBoundingClientRect().top + window.scrollY - navH - 20;
+        return Math.max(0, Math.min(y, maxY()));
+      };
+
+      const tickScroll = (now: number) => {
+        if (hashScroll) {
+          const t = Math.min(1, (now - hashT0) / hashDuration);
+          currentY = hashOrigin + (targetY - hashOrigin) * easeInOutCubic(t);
+          if (t >= 1) {
+            currentY = targetY;
+            scrolling = false;
+            hashScroll = false;
+          }
+        } else {
+          currentY += (targetY - currentY) * LERP;
+          if (Math.abs(targetY - currentY) < 0.4) {
+            currentY = targetY;
+            scrolling = false;
+          }
+        }
+        window.scrollTo(0, currentY);
+        if (scrolling) requestAnimationFrame(tickScroll);
+      };
+
+      const goTo = (y: number, asHash = false) => {
+        if (reducedMotion) {
+          hashScroll = false;
+          scrolling = false;
+          currentY = y;
+          targetY = y;
+          window.scrollTo(0, y);
+          return;
+        }
+        targetY = Math.max(0, Math.min(y, maxY()));
+        if (asHash) {
+          hashScroll = true;
+          hashOrigin = currentY;
+          hashT0 = performance.now();
+          hashDuration = Math.min(2200, Math.max(1400, Math.abs(targetY - hashOrigin) * 0.85));
+        } else {
+          hashScroll = false;
+        }
+        if (!scrolling) {
+          scrolling = true;
+          requestAnimationFrame(tickScroll);
+        }
+      };
+
+      const scrollToHash = (hash: string) => {
+        if (!hash || hash === "#") return;
+        const id = decodeURIComponent(hash.slice(1));
+        const el = document.getElementById(id);
+        if (!el) return;
+        currentY = window.scrollY;
+        goTo(lockY(el), true);
+      };
+
+      const samePageHash = (anchor: HTMLAnchorElement) => {
+        const url = new URL(anchor.href, window.location.href);
+        if (!url.hash) return null;
+        if (url.pathname !== window.location.pathname) return null;
+        return url;
+      };
+
+      const menuOpen = () => document.body.style.overflow === "hidden";
+
+      if (!reducedMotion) {
+        window.addEventListener(
+          "wheel",
+          (event) => {
+            if (event.ctrlKey || menuOpen()) return;
+            event.preventDefault();
+            const from = hashScroll ? currentY : targetY;
+            goTo(from + event.deltaY * WHEEL_SCALE);
+          },
+          { passive: false }
+        );
+
+        window.addEventListener("keydown", (event) => {
+          if (!keys.has(event.key) || event.defaultPrevented || menuOpen()) return;
+          const tag = (event.target as HTMLElement | null)?.tagName;
+          if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+          if ((event.target as HTMLElement | null)?.isContentEditable) return;
+
+          event.preventDefault();
+          const page = window.innerHeight * 0.78;
+          if (event.key === "Home") goTo(0);
+          else if (event.key === "End") goTo(maxY());
+          else if (event.key === "ArrowDown") goTo(targetY + 72);
+          else if (event.key === "ArrowUp") goTo(targetY - 72);
+          else if (event.key === "PageDown" || (event.key === " " && !event.shiftKey)) {
+            goTo(targetY + page);
+          } else {
+            goTo(targetY - page);
+          }
+        });
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (scrolling) return;
+            currentY = window.scrollY;
+            targetY = window.scrollY;
+          },
+          { passive: true }
+        );
+
+        window.addEventListener("resize", () => {
+          targetY = Math.max(0, Math.min(targetY, maxY()));
+        }, { passive: true });
+      }
+
+      document.addEventListener("click", (event) => {
+        const anchor = (event.target as Element | null)?.closest("a");
+        if (!anchor || event.defaultPrevented || event.button !== 0) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const url = samePageHash(anchor);
+        if (!url) return;
+        event.preventDefault();
+        if (url.hash !== window.location.hash) {
+          history.pushState(null, "", url.hash);
+        }
+        scrollToHash(url.hash);
+      });
+
+      window.addEventListener("popstate", () => {
+        if (location.hash) scrollToHash(location.hash);
+        else goTo(0, true);
+      });
+
+      if (location.hash) {
+        window.scrollTo(0, 0);
+        currentY = 0;
+        targetY = 0;
+        requestAnimationFrame(() => scrollToHash(location.hash));
       }
     </script>
   </body>

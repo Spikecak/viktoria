@@ -1,4 +1,5 @@
 ---
+import BrandMark from "./BrandMark.astro";
 ---
 
 <footer class="footer" id="kontakt" role="contentinfo">
@@ -6,9 +7,7 @@
     <div class="footer__grid">
 
       <div class="footer__brand">
-        <a href="/" class="footer__logo" aria-label="Restaurace Viktoria — domovská stránka">
-          Viktoria
-        </a>
+        <BrandMark class="footer__logo" />
         <p class="footer__tagline">
           Autentická ukrajinská kuchyně<br />v Praze
         </p>
@@ -97,19 +96,10 @@
     margin-bottom: 2rem;
   }
 
-  .footer__logo {
-    display: block;
-    font-family: var(--font-serif);
+  .footer__brand :global(.footer__logo) {
     font-size: 2rem;
-    font-style: normal;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
     color: var(--color-cream);
-    text-decoration: none;
     margin-bottom: 0.875rem;
-    line-height: 1;
-    letter-spacing: 0.02em;
   }
 
   .footer__tagline {

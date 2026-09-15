@@ -167,17 +167,7 @@ const menuSections = [
   navSolid
 >
   <main class="menu-page">
-
-    <header class="menu-hero">
-      <div class="site-container">
-        <p class="eyebrow">Jídelní lístek</p>
-        <h1 class="menu-hero__title">Co u nás najdete</h1>
-        <p class="menu-hero__sub">
-          Vše připravujeme denně z čerstvých surovin. Informujte nás prosím 
-          o případných alergiích nebo speciálních požadavcích.
-        </p>
-      </div>
-    </header>
+    <h1 class="sr-only">Jídelní lístek</h1>
 
     <div class="menu-body site-container">
       {
@@ -217,31 +207,6 @@ const menuSections = [
 <style>
   .menu-page {
     padding-top: 5rem;
-  }
-
-  .menu-hero {
-    padding: clamp(4rem, 9vw, 8rem) 0 clamp(3rem, 5vw, 5rem);
-    background-color: var(--color-warm-white);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .menu-hero__title {
-    font-family: var(--font-serif);
-    font-size: clamp(2.5rem, 7vw, 5.5rem);
-    font-weight: 500;
-    font-style: italic;
-    line-height: 0.97;
-    letter-spacing: -0.01em;
-    color: var(--color-charcoal);
-    margin: 0 0 1.25rem;
-  }
-
-  .menu-hero__sub {
-    font-size: 1rem;
-    line-height: 1.72;
-    color: var(--color-muted);
-    max-width: 52ch;
-    margin: 0;
   }
 
   .menu-body {

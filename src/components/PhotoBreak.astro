@@ -2,24 +2,36 @@
 ---
 
 <section class="photo-break" aria-label="Pohled do restaurace">
-  <img
-    src="/hero-restaurant.jpg"
-    alt="Interiér restaurace Viktoria — útulný sál s prostřenými stoly připravenými pro hosty"
-    loading="lazy"
-  />
-  <div class="photo-break__overlay"></div>
+  <div class="photo-break__clip">
+    <img
+      src="/hero-restaurant.jpg"
+      alt="Interiér restaurace Viktoria — útulný sál s prostřenými stoly připravenými pro hosty"
+      loading="lazy"
+    />
+  </div>
+  <div class="photo-break__overlay" aria-hidden="true"></div>
 </section>
 
 <style>
   .photo-break {
     height: clamp(380px, 55vh, 680px);
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
+  }
+
+  .photo-break__clip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
   }
 
   .photo-break img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 110%;
+    height: 100vh;
+    height: 100dvh;
     object-fit: cover;
     object-position: 67% center;
     display: block;
@@ -32,22 +44,28 @@
     background: rgba(20, 16, 12, 0.25);
     pointer-events: none;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-break img {
+      height: 100%;
+      will-change: auto;
+    }
+  }
 </style>
 
 <script>
   const section = document.querySelector(".photo-break") as HTMLElement | null;
   const img = section?.querySelector("img") as HTMLImageElement | null;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  if (section && img && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (section && img && !reduced) {
     const onScroll = () => {
-      const rect = section.getBoundingClientRect();
-      const viewH = window.innerHeight;
-      if (rect.bottom < 0 || rect.top > viewH) return;
-      const progress = (viewH - rect.top) / (viewH + rect.height);
-      img.style.transform = `translateY(${(progress - 0.5) * 8}%)`;
+      const top = section.getBoundingClientRect().top;
+      img.style.transform = `translate3d(0, ${-top}px, 0)`;
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     onScroll();
   }
 </script>

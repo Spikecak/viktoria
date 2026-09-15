@@ -110,11 +110,29 @@ const dishes = [
     margin-bottom: clamp(3rem, 5vw, 4rem);
   }
 
+  .dish {
+    position: relative;
+  }
+
   .dish__image {
+    position: relative;
     overflow: hidden;
     aspect-ratio: 3 / 4;
-    margin-bottom: 1.1rem;
     background-color: var(--color-border);
+  }
+
+  .dish__image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(26, 25, 23, 0.88) 0%,
+      rgba(26, 25, 23, 0.45) 42%,
+      rgba(26, 25, 23, 0) 72%
+    );
+    pointer-events: none;
   }
 
   .dish__image img {
@@ -129,19 +147,28 @@ const dishes = [
     transform: scale(1.05);
   }
 
+  .dish__info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 1.35rem 1.1rem 1.2rem;
+  }
+
   .dish__name {
     font-family: var(--font-serif);
-    font-size: 1.2rem;
+    font-size: 1.35rem;
     font-style: italic;
     font-weight: 500;
-    color: var(--color-charcoal);
-    margin: 0 0 0.4rem;
+    color: var(--color-cream);
+    margin: 0 0 0.35rem;
   }
 
   .dish__tagline {
-    font-size: 0.875rem;
-    line-height: 1.55;
-    color: var(--color-muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: rgba(247, 243, 238, 0.78);
     margin: 0;
   }
 
@@ -188,6 +215,11 @@ const dishes = [
     .dishes__grid {
       grid-template-columns: 1fr;
       max-width: 380px;
+      gap: 1.25rem;
+    }
+
+    .dish__info {
+      padding: 1.6rem 1.15rem 1.25rem;
     }
   }
 </style>

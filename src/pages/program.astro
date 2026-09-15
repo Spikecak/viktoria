@@ -110,17 +110,7 @@ const initialParts = eventParts(defaultEvent.date);
   navSolid
 >
   <main class="program-page">
-
-    <header class="program-hero">
-      <div class="site-container">
-        <p class="eyebrow">Program</p>
-        <h1 class="program-hero__title">Co se u nás děje</h1>
-        <p class="program-hero__sub">
-          Označené dny v kalendáři patří večerům u Viktorie. Klikněte na datum —
-          objeví se fotografie a detaily večera.
-        </p>
-      </div>
-    </header>
+    <h1 class="sr-only">Program</h1>
 
     <section class="program-board site-container" aria-label="Kalendář večerů">
       <div class="program-cal" data-calendar data-events={JSON.stringify(events)}>
@@ -151,6 +141,7 @@ const initialParts = eventParts(defaultEvent.date);
               ...Array.from({ length: blanks }, () => null),
               ...Array.from({ length: count }, (_, i) => i + 1),
             ];
+            while (cells.length < 42) cells.push(null);
 
             return (
               <div
@@ -394,36 +385,11 @@ const initialParts = eventParts(defaultEvent.date);
     padding-top: 5rem;
   }
 
-  .program-hero {
-    padding: clamp(3.5rem, 8vw, 7rem) 0 clamp(2.5rem, 4vw, 4rem);
-    background-color: var(--color-warm-white);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .program-hero__title {
-    font-family: var(--font-serif);
-    font-size: clamp(2.5rem, 7vw, 5.5rem);
-    font-weight: 500;
-    font-style: italic;
-    line-height: 0.97;
-    letter-spacing: -0.01em;
-    color: var(--color-charcoal);
-    margin: 0 0 1.25rem;
-  }
-
-  .program-hero__sub {
-    font-size: 1rem;
-    line-height: 1.72;
-    color: var(--color-muted);
-    max-width: 52ch;
-    margin: 0;
-  }
-
   .program-board {
     display: grid;
     grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.2fr);
     gap: clamp(2.5rem, 6vw, 5.5rem);
-    align-items: start;
+    align-items: stretch;
     padding-top: clamp(3rem, 6vw, 5rem);
     padding-bottom: clamp(5rem, 9vw, 8rem);
   }
@@ -480,6 +446,10 @@ const initialParts = eventParts(defaultEvent.date);
   .cal__days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+  }
+
+  .cal__days {
+    grid-template-rows: repeat(6, 2.6rem);
   }
 
   .cal__weekdays {
@@ -591,22 +561,33 @@ const initialParts = eventParts(defaultEvent.date);
     color: var(--color-charcoal);
   }
 
-  .cal__upcoming-btn.is-current span:last-child {
-    font-style: italic;
-    font-family: var(--font-serif);
-    font-size: 1rem;
-  }
-
   .program-stage {
-    display: grid;
-    gap: 1.75rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
 
   .stage__media {
     position: relative;
-    aspect-ratio: 4 / 3;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow: hidden;
     background-color: var(--color-border);
+  }
+
+  .stage__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(26, 25, 23, 0.92) 0%,
+      rgba(26, 25, 23, 0.55) 42%,
+      rgba(26, 25, 23, 0) 72%
+    );
+    pointer-events: none;
   }
 
   .stage__media img {
@@ -623,54 +604,63 @@ const initialParts = eventParts(defaultEvent.date);
     opacity: 1;
   }
 
+  .stage__copy {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.15rem, 3vw, 1.75rem) clamp(1.25rem, 3vw, 1.75rem);
+  }
+
   .stage__when {
     display: flex;
     align-items: baseline;
     gap: 0.75rem;
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.65rem;
   }
 
   .stage__num {
     font-family: var(--font-serif);
-    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-size: clamp(2.75rem, 5vw, 4.25rem);
     font-weight: 500;
-    color: var(--color-charcoal);
+    color: var(--color-cream);
   }
 
   .stage__month {
     font-family: var(--font-serif);
     font-size: 1.15rem;
     font-style: italic;
-    color: var(--color-terracotta);
+    color: rgba(247, 243, 238, 0.62);
     text-transform: capitalize;
   }
 
   .stage__time {
     margin-left: auto;
     font-family: var(--font-sans);
-    font-size: 0.67rem;
+    font-size: 0.92rem;
     font-weight: 500;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-muted);
+    color: rgba(247, 243, 238, 0.7);
   }
 
   .stage__title {
     font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 3.4vw, 2.6rem);
+    font-size: clamp(1.7rem, 3.2vw, 2.5rem);
     font-weight: 500;
     font-style: italic;
     line-height: 1.08;
-    color: var(--color-charcoal);
-    margin: 0 0 0.85rem;
+    color: var(--color-cream);
+    margin: 0 0 0.7rem;
   }
 
   .stage__body {
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    color: var(--color-charcoal-soft);
-    max-width: 48ch;
-    margin: 0 0 1.5rem;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: rgba(247, 243, 238, 0.82);
+    max-width: 46ch;
+    margin: 0 0 1.25rem;
   }
 
   .stage__cta {
@@ -706,6 +696,18 @@ const initialParts = eventParts(defaultEvent.date);
 
     .program-stage {
       order: -1;
+      display: block;
+    }
+
+    .stage__media {
+      aspect-ratio: 3 / 4;
+      min-height: 36rem;
+      flex: none;
+    }
+
+    .stage__body {
+      font-size: 0.92rem;
+      margin-bottom: 1.1rem;
     }
   }
 </style>
