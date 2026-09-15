@@ -1,7 +1,7 @@
 ---
 ---
 
-<section class="photo-break" aria-label="Pohled do restaurace">
+<section class="photo-break" aria-labelledby="photo-break-heading">
   <div class="photo-break__clip">
     <img
       src="/hero-restaurant.jpg"
@@ -10,6 +10,14 @@
     />
   </div>
   <div class="photo-break__overlay" aria-hidden="true"></div>
+  <div class="photo-break__copy site-container">
+    <h2 id="photo-break-heading" class="photo-break__title" data-reveal>
+      Velký prostor pro velké chvíle
+    </h2>
+    <p class="photo-break__text" data-reveal data-reveal-delay="3">
+      Oslavy, rodinná setkání i firemní akce. Dost místa pro všechny.
+    </p>
+  </div>
 </section>
 
 <style>
@@ -41,8 +49,41 @@
   .photo-break__overlay {
     position: absolute;
     inset: 0;
-    background: rgba(20, 16, 12, 0.25);
+    background: rgba(20, 16, 12, 0.38);
     pointer-events: none;
+  }
+
+  .photo-break__copy {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .photo-break__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.15rem, 4.2vw, 3.5rem);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 1px 18px rgba(20, 16, 12, 0.35);
+  }
+
+  .photo-break__text {
+    font-size: clamp(1.14rem, 1.68vw, 1.275rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 1.15rem 0 0;
+    max-width: 34ch;
+    text-shadow: 0 1px 14px rgba(20, 16, 12, 0.4);
   }
 
   @media (prefers-reduced-motion: reduce) {

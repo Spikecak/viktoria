@@ -226,18 +226,15 @@ const initialParts = eventParts(defaultEvent.date);
           />
           <img data-stage-image-next alt="" />
         </div>
-        <div class="stage__copy">
+        <div class="stage__copy" data-stage-copy>
           <p class="stage__when">
             <span class="stage__num" data-stage-day>{initialParts.day}</span>
             <span class="stage__month" data-stage-month>{initialParts.monthName}</span>
+            <span class="stage__sep" aria-hidden="true">/</span>
             <span class="stage__time" data-stage-time>{defaultEvent.time}</span>
           </p>
           <h2 class="stage__title" data-stage-title>{defaultEvent.title}</h2>
           <p class="stage__body" data-stage-body>{defaultEvent.body}</p>
-          <a href="tel:+420601601216" class="stage__cta">
-            Rezervace
-            <span aria-hidden="true">→</span>
-          </a>
         </div>
       </article>
     </section>
@@ -280,13 +277,18 @@ const initialParts = eventParts(defaultEvent.date);
   const nextBtn = document.querySelector("[data-cal-next]");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const stageCopy = document.querySelector<HTMLElement>("[data-stage-copy]");
   const stageDay = document.querySelector("[data-stage-day]");
   const stageMonth = document.querySelector("[data-stage-month]");
   const stageTime = document.querySelector("[data-stage-time]");
   const stageTitle = document.querySelector("[data-stage-title]");
   const stageBody = document.querySelector("[data-stage-body]");
-  const stageImage = document.querySelector<HTMLImageElement>("[data-stage-image]");
-  const stageImageNext = document.querySelector<HTMLImageElement>("[data-stage-image-next]");
+  let stageImage = document.querySelector<HTMLImageElement>("[data-stage-image]");
+  let stageImageNext = document.querySelector<HTMLImageElement>("[data-stage-image-next]");
+  const IMAGE_FADE_MS = 1000;
+  const COPY_FADE_MS = 420;
+  let imageFadeTimer = 0;
+  let copyFadeTimer = 0;
 
   let activeMonth = document.querySelector<HTMLElement>(".cal__month-grid.is-active")?.dataset.month || "";
 
@@ -327,30 +329,63 @@ const initialParts = eventParts(defaultEvent.date);
     }
     if (stage) stage.dataset.currentDate = date;
 
-    const [, month, day] = date.split("-");
-    if (stageDay) stageDay.textContent = String(Number(day));
-    if (stageMonth) stageMonth.textContent = monthNames[Number(month) - 1] || "";
-    if (stageTime) stageTime.textContent = event.time;
-    if (stageTitle) stageTitle.textContent = event.title;
-    if (stageBody) stageBody.textContent = event.body;
+    const applyCopy = () => {
+      const [, month, day] = date.split("-");
+      if (stageDay) stageDay.textContent = String(Number(day));
+      if (stageMonth) stageMonth.textContent = monthNames[Number(month) - 1] || "";
+      if (stageTime) stageTime.textContent = event.time;
+      if (stageTitle) stageTitle.textContent = event.title;
+      if (stageBody) stageBody.textContent = event.body;
+    };
+
+    window.clearTimeout(copyFadeTimer);
+    window.clearTimeout(imageFadeTimer);
+
+    if (reducedMotion) {
+      applyCopy();
+    } else {
+      stageCopy?.classList.add("is-fading");
+      copyFadeTimer = window.setTimeout(() => {
+        applyCopy();
+        stageCopy?.classList.remove("is-fading");
+      }, COPY_FADE_MS);
+    }
 
     if (stageImage && stageImageNext && stageImage.getAttribute("src") !== event.image) {
+      const outgoing = stageImage;
+      const incoming = stageImageNext;
+
+      const settleLayers = () => {
+        outgoing.removeAttribute("data-stage-image");
+        outgoing.setAttribute("data-stage-image-next", "");
+        incoming.removeAttribute("data-stage-image-next");
+        incoming.setAttribute("data-stage-image", "");
+        outgoing.style.transition = "none";
+        incoming.style.transition = "none";
+        outgoing.classList.remove("is-visible");
+        incoming.classList.add("is-visible");
+        outgoing.removeAttribute("src");
+        outgoing.alt = "";
+        stageImage = incoming;
+        stageImageNext = outgoing;
+        void outgoing.offsetHeight;
+        requestAnimationFrame(() => {
+          outgoing.style.removeProperty("transition");
+          incoming.style.removeProperty("transition");
+        });
+      };
+
       const showNext = () => {
-        stageImageNext.src = event.image;
-        stageImageNext.alt = event.alt;
-        stageImageNext.classList.add("is-visible");
-        stageImage.classList.remove("is-visible");
-        window.setTimeout(() => {
-          stageImage.src = event.image;
-          stageImage.alt = event.alt;
-          stageImage.classList.add("is-visible");
-          stageImageNext.classList.remove("is-visible");
-        }, reducedMotion ? 0 : 520);
+        incoming.src = event.image;
+        incoming.alt = event.alt;
+        incoming.classList.add("is-visible");
+        outgoing.classList.remove("is-visible");
+        imageFadeTimer = window.setTimeout(settleLayers, IMAGE_FADE_MS + 40);
       };
 
       if (reducedMotion) {
-        stageImage.src = event.image;
-        stageImage.alt = event.alt;
+        outgoing.src = event.image;
+        outgoing.alt = event.alt;
       } else {
         showNext();
       }
@@ -407,7 +442,7 @@ const initialParts = eventParts(defaultEvent.date);
     font-size: 1.75rem;
     font-style: italic;
     font-weight: 500;
-    color: var(--color-charcoal);
+    color: var(--color-heading);
     margin: 0;
   }
 
@@ -477,7 +512,8 @@ const initialParts = eventParts(defaultEvent.date);
     place-items: center;
     font-family: var(--font-sans);
     font-size: 0.875rem;
-    color: var(--color-charcoal-soft);
+    color: var(--color-muted);
+    opacity: 0.4;
     border: none;
     background: none;
     padding: 0;
@@ -492,6 +528,7 @@ const initialParts = eventParts(defaultEvent.date);
     cursor: pointer;
     color: var(--color-charcoal);
     font-weight: 500;
+    opacity: 1;
   }
 
   .cal__day--event::after {
@@ -573,7 +610,7 @@ const initialParts = eventParts(defaultEvent.date);
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
-    background-color: var(--color-border);
+    background-color: var(--color-charcoal);
   }
 
   .stage__media::after {
@@ -597,7 +634,7 @@ const initialParts = eventParts(defaultEvent.date);
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 1s ease-in-out;
   }
 
   .stage__media img.is-visible {
@@ -611,16 +648,22 @@ const initialParts = eventParts(defaultEvent.date);
     bottom: 0;
     z-index: 2;
     padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.15rem, 3vw, 1.75rem) clamp(1.25rem, 3vw, 1.75rem);
+    transition: opacity 0.42s ease;
+  }
+
+  .stage__copy.is-fading {
+    opacity: 0;
   }
 
   .stage__when {
     display: flex;
     align-items: baseline;
-    gap: 0.75rem;
+    gap: 0.55rem;
     margin: 0 0 0.65rem;
   }
 
-  .stage__num {
+  .stage__num,
+  .stage__time {
     font-family: var(--font-serif);
     font-size: clamp(2.75rem, 5vw, 4.25rem);
     font-weight: 500;
@@ -635,14 +678,12 @@ const initialParts = eventParts(defaultEvent.date);
     text-transform: capitalize;
   }
 
-  .stage__time {
-    margin-left: auto;
-    font-family: var(--font-sans);
-    font-size: 0.92rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(247, 243, 238, 0.7);
+  .stage__sep {
+    font-family: var(--font-serif);
+    font-size: clamp(1.85rem, 3.4vw, 2.85rem);
+    font-weight: 400;
+    color: rgba(247, 243, 238, 0.42);
+    line-height: 1;
   }
 
   .stage__title {
@@ -660,32 +701,17 @@ const initialParts = eventParts(defaultEvent.date);
     line-height: 1.65;
     color: rgba(247, 243, 238, 0.82);
     max-width: 46ch;
-    margin: 0 0 1.25rem;
-  }
-
-  .stage__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-sans);
-    font-size: 0.67rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--color-cream);
-    background-color: var(--color-terracotta);
-    padding: 0.85rem 1.75rem;
-    transition: background-color 0.25s ease;
-  }
-
-  .stage__cta:hover {
-    background-color: var(--color-charcoal);
+    margin: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .stage__media img {
+    .stage__media img,
+    .stage__copy {
       transition: none;
+    }
+
+    .stage__copy.is-fading {
+      opacity: 1;
     }
   }
 
@@ -707,7 +733,6 @@ const initialParts = eventParts(defaultEvent.date);
 
     .stage__body {
       font-size: 0.92rem;
-      margin-bottom: 1.1rem;
     }
   }
 </style>

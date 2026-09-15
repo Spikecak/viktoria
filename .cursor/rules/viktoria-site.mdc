@@ -1,0 +1,38 @@
+---
+description: Viktoria site setup and reservation context
+alwaysApply: true
+---
+
+# Viktoria Restaurant site
+
+Astro + Tailwind cinematic site (Czech copy). Display: Bodoni Moda. Body: Work Sans. Brand mark is stacked VIKTORIA / letter-spread RESTAURANT (nav, footer, hero).
+
+Hero CTA, nav **Rezervace**, and `#rezervace` (`Visit.astro`) all land on **Vyhraďte si místo u stolu**. Primary actions: `tel:+420601601216` and `mailto:info@viktoria-restaurant.cz`. Second phone `+420 773 673 393`.
+
+Hours: Po–Čt 11:00–21:00, Pá 11:00–23:00, So–Ne 11:00–02:00. Address Jabloňová 2136/11, Praha 10–Záběhlice.
+
+`/program` already has an editorial Monday-first calendar. Reuse that language if adding date picking. Do not turn reservation into a third-party widget that breaks the visual system unless asked.
+
+## Visit section (live now)
+
+**Navštivte nás** is contact-only (no form): address, two phones, hours, **Rezervace telefonicky** + **Napište nám**, map `/map-viktoria.jpg` aligned with the heading (`grid-row: 2 / 4`).
+
+## Saved reservation form (restore into `Visit.astro` when asked)
+
+Prototype only — no backend. Submit hides the form and shows: *Děkujeme. Ozveme se na vaše číslo a stůl potvrdíme.*
+
+Layout: left column form, map still `grid-row: 2 / 4`. Do **not** put address/phones/hours under the form (they made the map too tall). Contact stays in the footer.
+
+Fields:
+
+- **Datum** — `button.book__trigger` + Monday-first popup calendar (past days disabled). Default: tomorrow. Label format `16. září`. Chevron like the selects; date text `translateY(4px)` to match native select baselines.
+- **Čas** — `<select>` slots from 11:00 in 30 min steps. Last slot: Po–Čt 20:00, Pá 22:00, So–Ne 01:00 (`lastHour` 20 / 22 / 25). Prefer `18:00`. Empty option *Nejdřív datum* until a date is chosen.
+- **Hosté** — `<select>` 1–8, default 2.
+- **Jméno**, **Telefon** — required text/tel.
+- **Poznámka** — optional, placeholder *Alergie, oslava, dětská židle…*
+
+Shared control box: height `2.55rem`, underline, chevrons on date/time/guests. Hint `margin: 2rem 0 1.35rem`. Hint swaps at 8 guests: *Pro více než 8 osob volejte — rádi připravíme větší stůl.* Else: *Žádost o rezervaci — stůl potvrdíme telefonicky. Nad 8 osob volejte.*
+
+Actions: **Odeslat žádost** (submit) + **Rezervace telefonicky** (`tel:+420601601216`). Close the calendar only when the click is outside the date field (button lives inside the field).
+
+Controls: `.book__picks` 3×1fr (2-col / 1-col at 960 / 560). Title color `var(--color-heading)` (`#616161`).

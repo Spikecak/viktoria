@@ -83,7 +83,11 @@ const { solid = false } = Astro.props;
   }
 
   .site-nav.scrolled :global(.nav-logo) {
-    color: var(--color-charcoal);
+    color: var(--color-heading);
+  }
+
+  .site-nav.scrolled :global(.brand-mark__sub) {
+    opacity: 1;
   }
 
   .nav-overlay nav a {
@@ -108,7 +112,7 @@ const { solid = false } = Astro.props;
   }
 
   .site-nav.scrolled .nav-links a {
-    color: var(--color-charcoal);
+    color: var(--color-heading);
   }
 
   .nav-links a:hover {
@@ -137,7 +141,7 @@ const { solid = false } = Astro.props;
   }
 
   .site-nav.scrolled .nav-hamburger span {
-    background-color: var(--color-charcoal);
+    background-color: var(--color-heading);
   }
 
   /* Mobile overlay */
