@@ -396,6 +396,65 @@ const initialParts = eventParts(defaultEvent.date);
     setMonth(date.slice(0, 7));
   };
 
+  const eventDates = events.map((event) => event.date);
+  const stage = document.querySelector<HTMLElement>("[data-stage]");
+  let swipeLock = false;
+  let wheelAcc = 0;
+  let wheelReset = 0;
+  let pointer: { id: number; x: number; y: number } | null = null;
+
+  const stepEvent = (dir: 1 | -1) => {
+    if (swipeLock) return;
+    const current = stage?.dataset.currentDate || "";
+    const index = eventDates.indexOf(current);
+    const next = index + dir;
+    if (index < 0 || next < 0 || next >= eventDates.length) return;
+    swipeLock = true;
+    selectEvent(eventDates[next]);
+    window.setTimeout(() => {
+      swipeLock = false;
+    }, 520);
+  };
+
+  if (stage) {
+    stage.addEventListener(
+      "wheel",
+      (event) => {
+        if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+        event.preventDefault();
+        wheelAcc += event.deltaX;
+        window.clearTimeout(wheelReset);
+        if (Math.abs(wheelAcc) >= 72) {
+          stepEvent(wheelAcc > 0 ? 1 : -1);
+          wheelAcc = 0;
+        } else {
+          wheelReset = window.setTimeout(() => {
+            wheelAcc = 0;
+          }, 140);
+        }
+      },
+      { passive: false }
+    );
+
+    stage.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      pointer = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    });
+
+    stage.addEventListener("pointerup", (event) => {
+      if (!pointer || event.pointerId !== pointer.id) return;
+      const dx = event.clientX - pointer.x;
+      const dy = event.clientY - pointer.y;
+      pointer = null;
+      if (Math.abs(dx) < 46 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+      stepEvent(dx < 0 ? 1 : -1);
+    });
+
+    stage.addEventListener("pointercancel", () => {
+      pointer = null;
+    });
+  }
+
   document.querySelectorAll<HTMLButtonElement>("[data-date]").forEach((btn) => {
     btn.addEventListener("click", () => {
       if (btn.dataset.date) selectEvent(btn.dataset.date);
@@ -612,6 +671,8 @@ const initialParts = eventParts(defaultEvent.date);
     display: flex;
     flex-direction: column;
     min-height: 0;
+    touch-action: pan-y;
+    user-select: none;
   }
 
   .stage__media {
@@ -644,6 +705,8 @@ const initialParts = eventParts(defaultEvent.date);
     object-fit: cover;
     opacity: 0;
     transition: opacity 1s ease-in-out;
+    -webkit-user-drag: none;
+    user-select: none;
   }
 
   .stage__media img.is-visible {
