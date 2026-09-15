@@ -23,6 +23,7 @@
 <style>
   .photo-break {
     height: clamp(380px, 55vh, 680px);
+    height: clamp(380px, 55svh, 680px);
     position: relative;
     overflow: hidden;
   }
@@ -39,11 +40,12 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    height: 100dvh;
+    height: 100lvh;
     object-fit: cover;
     object-position: 67% center;
     display: block;
     will-change: transform;
+    pointer-events: none;
   }
 
   .photo-break__overlay {
@@ -106,7 +108,7 @@
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("orientationchange", onScroll);
     onScroll();
   }
 </script>
