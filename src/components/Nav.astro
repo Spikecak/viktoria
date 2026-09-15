@@ -1,0 +1,267 @@
+---
+interface Props {
+  solid?: boolean;
+}
+
+const { solid = false } = Astro.props;
+---
+
+<header class:list={["site-nav", { scrolled: solid }]} id="site-nav" data-nav-solid={solid ? "" : undefined} role="banner">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo" aria-label="Restaurace Viktoria — domovská stránka">
+      Viktoria
+    </a>
+
+    <nav class="nav-links" aria-label="Hlavní navigace">
+      <a href="/menu">Menu</a>
+      <a href="/program">Program</a>
+      <a href="/#pribeh">O nás</a>
+      <a href="/#rezervace">Rezervace</a>
+      <a href="/#kontakt">Kontakt</a>
+    </nav>
+
+    <button
+      class="nav-hamburger"
+      id="nav-hamburger"
+      aria-label="Otevřít navigaci"
+      aria-expanded="false"
+      aria-controls="nav-overlay"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<div class="nav-overlay" id="nav-overlay" role="dialog" aria-modal="true" aria-label="Mobilní navigace">
+  <button class="nav-close" id="nav-close" aria-label="Zavřít navigaci">
+    <span aria-hidden="true">✕</span>
+  </button>
+  <nav aria-label="Mobilní navigace">
+    <a href="/menu">Menu</a>
+    <a href="/program">Program</a>
+    <a href="/#pribeh">O nás</a>
+    <a href="/#rezervace">Rezervace</a>
+    <a href="/#kontakt">Kontakt</a>
+  </nav>
+</div>
+
+<style>
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition:
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  .site-nav.scrolled {
+    background-color: var(--color-cream);
+    border-color: var(--color-border);
+    box-shadow: 0 1px 20px rgba(26, 25, 23, 0.06);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1360px;
+    margin-inline: auto;
+    padding: 1.375rem clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .nav-logo {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-cream);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.35s ease;
+    line-height: 1;
+  }
+
+  .site-nav.scrolled .nav-logo {
+    color: var(--color-charcoal);
+  }
+
+  .nav-overlay nav a {
+    font-style: normal;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.25rem;
+  }
+
+  .nav-links a {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(247, 243, 238, 0.8);
+    transition: opacity 0.2s ease, color 0.35s ease;
+  }
+
+  .site-nav.scrolled .nav-links a {
+    color: var(--color-charcoal);
+  }
+
+  .nav-links a:hover {
+    opacity: 0.55;
+  }
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background-color: var(--color-cream);
+    transition: background-color 0.35s ease;
+  }
+
+  .site-nav.scrolled .nav-hamburger span {
+    background-color: var(--color-charcoal);
+  }
+
+  /* Mobile overlay */
+  .nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background-color: var(--color-charcoal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .nav-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .nav-overlay nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.25rem;
+    text-align: center;
+  }
+
+  .nav-overlay nav a {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 9vw, 3.5rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--color-cream);
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+    line-height: 1;
+  }
+
+  .nav-overlay nav a:hover {
+    opacity: 0.45;
+  }
+
+  .nav-close {
+    position: absolute;
+    top: 1.5rem;
+    right: clamp(1.5rem, 5vw, 4rem);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.125rem;
+    color: var(--color-cream);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    padding: 0.5rem;
+    line-height: 1;
+  }
+
+  .nav-close:hover {
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+
+    .nav-hamburger {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById("site-nav");
+  const hamburger = document.getElementById("nav-hamburger");
+  const overlay = document.getElementById("nav-overlay");
+  const closeBtn = document.getElementById("nav-close");
+  const alwaysSolid = nav?.hasAttribute("data-nav-solid");
+
+  const syncNav = () => {
+    if (alwaysSolid || window.scrollY > 80) {
+      nav?.classList.add("scrolled");
+    } else {
+      nav?.classList.remove("scrolled");
+    }
+  };
+
+  syncNav();
+  window.addEventListener("scroll", syncNav, { passive: true });
+
+  const openMenu = () => {
+    overlay?.classList.add("open");
+    hamburger?.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeMenu = () => {
+    overlay?.classList.remove("open");
+    hamburger?.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  };
+
+  hamburger?.addEventListener("click", openMenu);
+  closeBtn?.addEventListener("click", closeMenu);
+
+  overlay?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay?.classList.contains("open")) {
+      closeMenu();
+    }
+  });
+</script>

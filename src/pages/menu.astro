@@ -1,0 +1,359 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Footer from "../components/Footer.astro";
+
+const menuSections = [
+  {
+    category: "Polévky",
+    items: [
+      {
+        name: "Boršč",
+        description: "Tradiční řepný vývar s hovězím masem, zelím a zakysanou smetanou",
+        price: "189 Kč",
+      },
+      {
+        name: "Kulešová",
+        description: "Hustá pohánková polévka se zeleninou, bylinkami a škvarkama",
+        price: "149 Kč",
+      },
+    ],
+  },
+  {
+    category: "Předkrmy",
+    items: [
+      {
+        name: "Oselédec",
+        description: "Marinovaný sleď se zakysanou smetanou, červenou cibulí a koprem",
+        price: "169 Kč",
+      },
+      {
+        name: "Salát Olivie",
+        description: "Tradiční bramborový salát s vejci, okurkou, mrkví a majonézou",
+        price: "179 Kč",
+      },
+      {
+        name: "Pampušky",
+        description: "Měkké česnekové knedlíčky s máslem, česnekem a čerstvými bylinkami",
+        price: "129 Kč",
+      },
+      {
+        name: "Salo s chlebem",
+        description: "Domácí uzené salo s černým chlebem, hořčicí a okurkou",
+        price: "149 Kč",
+      },
+    ],
+  },
+  {
+    category: "Varenyky",
+    items: [
+      {
+        name: "Bramborové s tvarohem",
+        description: "Plněné bramborou a čerstvým tvarohem, se zakysanou smetanou a osmaženou cibulí",
+        price: "249 Kč",
+      },
+      {
+        name: "Sýrové",
+        description: "Plněné žlutým sýrem a bramborem, se zakysanou smetanou",
+        price: "249 Kč",
+      },
+      {
+        name: "Masové",
+        description: "Plněné mletým vepřovým a hovězím masem s cibulí, se zakysanou smetanou",
+        price: "269 Kč",
+      },
+      {
+        name: "Třešňové",
+        description: "Sladké, plněné třešněmi s cukrem, podávané se zakysanou smetanou",
+        price: "239 Kč",
+      },
+    ],
+  },
+  {
+    category: "Hlavní jídla",
+    items: [
+      {
+        name: "Holubtsi",
+        description: "Zelné závitky plněné mletým masem a rýží, dušené v domácí rajčatové omáčce",
+        price: "299 Kč",
+      },
+      {
+        name: "Deruny s lososem",
+        description: "Zlatavé bramborové placky s uzeným lososem a zakysanou smetanou",
+        price: "279 Kč",
+      },
+      {
+        name: "Deruny s houbami",
+        description: "Bramborové placky s opékanými lesními houbami a zakysanou smetanou",
+        price: "259 Kč",
+      },
+      {
+        name: "Kurče po kyjevsku",
+        description: "Klasický kyjevský kotlet plněný bylinkovým máslem, s bramborovou kaší a salátem",
+        price: "349 Kč",
+      },
+      {
+        name: "Šašlyk z jehněčího",
+        description: "Grilované jehněčí kousky na špalíčce s bylinkovým marinovaným dresinkem a lavašem",
+        price: "389 Kč",
+      },
+      {
+        name: "Vegetariánský hrnec",
+        description: "Sezonní zelenina s fazolemi a bylinkami dušená v hliněném hrnci, podávaná s chlebem",
+        price: "269 Kč",
+      },
+    ],
+  },
+  {
+    category: "Dezerty",
+    items: [
+      {
+        name: "Medivnyk",
+        description: "Voňavý medový dort s vlašskými ořechy, sušeným ovocem a karamelovou polevou",
+        price: "159 Kč",
+      },
+      {
+        name: "Syrniki",
+        description: "Tvarohové placičky se zakysanou smetanou a čerstvým sezónním ovocem",
+        price: "149 Kč",
+      },
+      {
+        name: "Čokoládový tort",
+        description: "Domácí čokoládový dort s ganache a višněmi",
+        price: "169 Kč",
+      },
+    ],
+  },
+  {
+    category: "Nápoje",
+    items: [
+      {
+        name: "Kvass",
+        description: "Tradiční fermentovaný chlebový nápoj, lehce sladký a osvěžující",
+        price: "59 Kč",
+      },
+      {
+        name: "Uzvar",
+        description: "Kompot ze sušeného ovoce s medem, podávaný teplý i studený",
+        price: "69 Kč",
+      },
+      {
+        name: "Domácí limonáda",
+        description: "Citron, čerstvá máta, zázvor a med",
+        price: "79 Kč",
+      },
+      {
+        name: "Čaj s bylinkami",
+        description: "Výběr domácích bylinkových čajů s medem",
+        price: "65 Kč",
+      },
+      {
+        name: "Řemeslné pivo",
+        description: "Výběrové pivo lokálního pivovaru",
+        price: "89 Kč",
+      },
+      {
+        name: "Víno sklenka",
+        description: "Bílé nebo červené víno dle nabídky",
+        price: "99 Kč",
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Jídelní lístek — Viktoria Restaurant"
+  description="Jídelní lístek Viktoria Restaurant — boršč, varenyky, holubtsi, deruny a další tradiční ukrajinské speciality v Praze."
+  navSolid
+>
+  <main class="menu-page">
+
+    <header class="menu-hero">
+      <div class="site-container">
+        <p class="eyebrow">Jídelní lístek</p>
+        <h1 class="menu-hero__title">Co u nás najdete</h1>
+        <p class="menu-hero__sub">
+          Vše připravujeme denně z čerstvých surovin. Informujte nás prosím 
+          o případných alergiích nebo speciálních požadavcích.
+        </p>
+      </div>
+    </header>
+
+    <div class="menu-body site-container">
+      {
+        menuSections.map((section) => (
+          <section class="menu-section" aria-labelledby={`cat-${section.category}`}>
+            <h2 class="menu-section__title" id={`cat-${section.category}`}>
+              {section.category}
+            </h2>
+            <ul class="menu-list" role="list">
+              {section.items.map((item) => (
+                <li class="menu-item">
+                  <div class="menu-item__info">
+                    <p class="menu-item__name">{item.name}</p>
+                    <p class="menu-item__desc">{item.description}</p>
+                  </div>
+                  <p class="menu-item__price">{item.price}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+
+      <div class="menu-note">
+        <p>
+          Naše menu se mění se sezónou. Sledujte nás na Instagramu, abyste 
+          nezmeškali denní nabídku.
+        </p>
+        <a href="/" class="menu-back">← Zpět na hlavní stránku</a>
+      </div>
+    </div>
+
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .menu-page {
+    padding-top: 5rem;
+  }
+
+  .menu-hero {
+    padding: clamp(4rem, 9vw, 8rem) 0 clamp(3rem, 5vw, 5rem);
+    background-color: var(--color-warm-white);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .menu-hero__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 0.97;
+    letter-spacing: -0.01em;
+    color: var(--color-charcoal);
+    margin: 0 0 1.25rem;
+  }
+
+  .menu-hero__sub {
+    font-size: 1rem;
+    line-height: 1.72;
+    color: var(--color-muted);
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  .menu-body {
+    padding-top: clamp(3rem, 6vw, 5rem);
+    padding-bottom: clamp(5rem, 9vw, 8rem);
+  }
+
+  .menu-section {
+    max-width: 900px;
+    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .menu-section__title {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-charcoal);
+    margin: 0 0 0;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-charcoal);
+  }
+
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .menu-item__info {
+    flex: 1;
+  }
+
+  .menu-item__name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-charcoal);
+    margin: 0 0 0.25rem;
+  }
+
+  .menu-item__desc {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+    max-width: 55ch;
+    margin: 0;
+  }
+
+  .menu-item__price {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-charcoal-soft);
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  .menu-note {
+    margin-top: clamp(3rem, 5vw, 4rem);
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .menu-note p {
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    max-width: 52ch;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .menu-back {
+    font-family: var(--font-sans);
+    font-size: 0.67rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-charcoal);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.15rem;
+    transition: color 0.2s, border-color 0.2s;
+    display: inline-block;
+  }
+
+  .menu-back:hover {
+    color: var(--color-terracotta);
+    border-color: var(--color-terracotta);
+  }
+
+  @media (max-width: 640px) {
+    .menu-item {
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .menu-item__price {
+      color: var(--color-terracotta);
+      font-size: 0.8125rem;
+    }
+  }
+</style>

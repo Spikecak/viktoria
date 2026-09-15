@@ -1,0 +1,241 @@
+---
+---
+
+<section class="visit section-padding" id="rezervace" aria-labelledby="visit-heading">
+  <div class="site-container">
+
+    <div class="visit__grid">
+
+      <p class="eyebrow visit__eyebrow" data-reveal>Navštivte nás</p>
+      <h2 id="visit-heading" class="visit__title" data-reveal>
+        Vyhraďte si místo u stolu
+      </h2>
+
+      <div class="visit__info" data-reveal data-reveal-delay="1">
+        <div class="visit__detail">
+          <p class="visit__label">Adresa</p>
+          <address class="visit__value" style="font-style: normal;">
+            Jabloňová 2136/11<br />106 00 Praha 10 – Záběhlice
+          </address>
+        </div>
+
+        <div class="visit__detail">
+          <p class="visit__label">Telefon</p>
+          <p class="visit__value visit__phones">
+            <a href="tel:+420601601216">+420 601 601 216</a>
+            <a href="tel:+420773673393">+420 773 673 393</a>
+          </p>
+        </div>
+
+        <div class="visit__detail">
+          <p class="visit__label">Otevírací doba</p>
+          <dl class="visit__hours">
+            <div class="visit__hours-row">
+              <dt>Pondělí – Čtvrtek</dt>
+              <dd>11:00 – 21:00</dd>
+            </div>
+            <div class="visit__hours-row">
+              <dt>Pátek</dt>
+              <dd>11:00 – 23:00</dd>
+            </div>
+            <div class="visit__hours-row">
+              <dt>Sobota – Neděle</dt>
+              <dd>11:00 – 02:00</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="visit__actions">
+          <a href="tel:+420601601216" class="visit__cta">
+            Rezervace telefonicky
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="mailto:info@viktoria-restaurant.cz" class="visit__cta visit__cta--outline">
+            Napište nám
+          </a>
+        </div>
+      </div>
+
+      <div class="visit__map" data-reveal data-reveal-delay="2">
+        <img
+          src="/map-viktoria.jpg"
+          alt="Ilustrovaná mapa okolí restaurace Viktoria na Jabloňové v Praze 10 – Záběhlice"
+          loading="lazy"
+        />
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .visit {
+    background-color: var(--color-warm-white);
+  }
+
+  .visit__grid {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(3rem, 8vw, 6rem);
+    row-gap: 0;
+    align-items: stretch;
+  }
+
+  .visit__eyebrow {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .visit__title {
+    grid-column: 1;
+    grid-row: 2;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.08;
+    color: var(--color-charcoal);
+    margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .visit__info {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .visit__map {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .visit__map img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  .visit__detail {
+    margin-bottom: 2rem;
+  }
+
+  .visit__detail:last-of-type {
+    margin-bottom: 2.5rem;
+  }
+
+  .visit__label {
+    font-family: var(--font-sans);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-terracotta);
+    margin: 0 0 0.5rem;
+  }
+
+  .visit__value {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-charcoal);
+    margin: 0;
+  }
+
+  .visit__value a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    transition: border-color 0.2s;
+  }
+
+  .visit__value a:hover {
+    border-color: var(--color-charcoal);
+  }
+
+  .visit__phones {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .visit__hours {
+    margin: 0;
+  }
+
+  .visit__hours-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.9375rem;
+  }
+
+  .visit__hours-row dt {
+    min-width: 155px;
+    color: var(--color-charcoal-soft);
+  }
+
+  .visit__hours-row dd {
+    margin: 0;
+    color: var(--color-charcoal);
+  }
+
+  .visit__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+  }
+
+  .visit__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.875rem;
+    font-family: var(--font-sans);
+    font-size: 0.67rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-cream);
+    background-color: var(--color-terracotta);
+    transition: background-color 0.25s ease;
+  }
+
+  .visit__cta:hover {
+    background-color: var(--color-charcoal);
+  }
+
+  .visit__cta--outline {
+    background-color: transparent;
+    color: var(--color-charcoal);
+    border: 1px solid var(--color-border);
+  }
+
+  .visit__cta--outline:hover {
+    background-color: var(--color-charcoal);
+    color: var(--color-cream);
+    border-color: var(--color-charcoal);
+  }
+
+  @media (max-width: 960px) {
+    .visit__grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+
+    .visit__eyebrow,
+    .visit__title,
+    .visit__info,
+    .visit__map {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .visit__map img {
+      height: auto;
+    }
+  }
+</style>

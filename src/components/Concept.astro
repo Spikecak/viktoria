@@ -1,0 +1,137 @@
+---
+---
+
+<section class="concept section-padding" id="koncept" aria-labelledby="concept-heading">
+  <div class="site-container">
+    <div class="concept__grid">
+
+      <div class="concept__text" data-reveal>
+        <p class="eyebrow">Koncept</p>
+        <h2 id="concept-heading" class="concept__heading">
+          Tradice a<br />pohostinnost
+        </h2>
+        <p class="concept__body">
+          Restaurace Viktoria přináší autentické chutě Ukrajiny do srdce Prahy. 
+          Každý recept odráží generacemi předávané rodinné tradice — od syté boršče 
+          přes jemně plněné varenyky až po křupavé deruny.
+        </p>
+        <p class="concept__body">
+          Používáme čerstvé sezónní suroviny a vaříme s péčí, kterou znáte z domácí 
+          kuchyně. Přijďte se nechat pohostit.
+        </p>
+      </div>
+
+      <div class="concept__images" aria-hidden="true">
+        <div class="concept__img concept__img--1" data-reveal data-reveal-delay="1">
+          <div class="parallax-media" data-parallax="7">
+            <img
+              src="https://images.unsplash.com/photo-1576402187878-974f70c890a5?w=900&q=80&auto=format&fit=crop"
+              alt="Varenyky — tradiční ručně vyráběné ukrajinské knedlíky"
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <div class="concept__img concept__img--2" data-reveal data-reveal-delay="2">
+          <div class="parallax-media" data-parallax="10">
+            <img
+              src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80&auto=format&fit=crop"
+              alt="Čerstvý domácí chléb pečený v restauraci"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .concept {
+    background-color: var(--color-warm-white);
+  }
+
+  .concept__grid {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: clamp(3rem, 8vw, 6rem);
+    align-items: center;
+  }
+
+  .concept__text {
+    padding-right: clamp(0rem, 3vw, 2rem);
+  }
+
+  .concept__heading {
+    font-family: var(--font-serif);
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--color-charcoal);
+    margin: 0 0 1.75rem;
+  }
+
+  .concept__body {
+    font-size: 1.0625rem;
+    line-height: 1.78;
+    color: var(--color-charcoal-soft);
+    max-width: 48ch;
+    margin: 0 0 1.25rem;
+  }
+
+  .concept__body:last-child {
+    margin-bottom: 0;
+  }
+
+  .concept__images {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .concept__img {
+    overflow: hidden;
+  }
+
+  .concept__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .concept__img:hover img {
+    transform: scale(1.04);
+  }
+
+  .concept__img--1 {
+    aspect-ratio: 3 / 4;
+  }
+
+  .concept__img--2 {
+    aspect-ratio: 4 / 5;
+    margin-top: 3.5rem;
+  }
+
+  @media (max-width: 960px) {
+    .concept__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .concept__text {
+      padding-right: 0;
+    }
+
+    .concept__images {
+      max-width: 560px;
+    }
+
+    .concept__body {
+      max-width: 60ch;
+    }
+  }
+</style>

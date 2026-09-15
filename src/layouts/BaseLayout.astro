@@ -1,0 +1,93 @@
+---
+import "../styles/global.css";
+import "@fontsource/bodoni-moda/400.css";
+import "@fontsource/bodoni-moda/400-italic.css";
+import "@fontsource/bodoni-moda/500.css";
+import "@fontsource/bodoni-moda/500-italic.css";
+import "@fontsource/work-sans/400.css";
+import "@fontsource/work-sans/500.css";
+import Nav from "../components/Nav.astro";
+
+export interface Props {
+  title: string;
+  description?: string;
+  navSolid?: boolean;
+}
+
+const {
+  title,
+  description = "Restaurace Viktoria — Autentická Ukrajinská Kuchyně v Praze",
+  navSolid = false,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Nav solid={navSolid} />
+    <slot />
+
+    <script>
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const layers = reducedMotion
+        ? []
+        : ([...document.querySelectorAll("[data-parallax]")] as HTMLElement[]);
+
+      const updateParallax = () => {
+        const viewH = window.innerHeight;
+        for (const el of layers) {
+          const revealParent = el.closest("[data-reveal]");
+          if (revealParent && !revealParent.classList.contains("revealed")) continue;
+
+          const rect = el.getBoundingClientRect();
+          if (rect.bottom < 0 || rect.top > viewH) continue;
+
+          const speed = Number(el.dataset.parallax) || 8;
+          const progress = (viewH - rect.top) / (viewH + rect.height);
+          el.style.transform = `translate3d(0, ${(progress - 0.5) * speed}%, 0)`;
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+              observer.unobserve(entry.target);
+              if (layers.length) updateParallax();
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+      );
+
+      document.querySelectorAll("[data-reveal]").forEach((el) => {
+        observer.observe(el);
+      });
+
+      if (layers.length) {
+        let ticking = false;
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+              updateParallax();
+              ticking = false;
+            });
+          },
+          { passive: true }
+        );
+        window.addEventListener("resize", updateParallax, { passive: true });
+        updateParallax();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+---
+---
+
+<section class="photo-break" aria-label="Pohled do restaurace">
+  <img
+    src="/hero-restaurant.jpg"
+    alt="Interiér restaurace Viktoria — útulný sál s prostřenými stoly připravenými pro hosty"
+    loading="lazy"
+  />
+  <div class="photo-break__overlay"></div>
+</section>
+
+<style>
+  .photo-break {
+    height: clamp(380px, 55vh, 680px);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .photo-break img {
+    width: 100%;
+    height: 110%;
+    object-fit: cover;
+    object-position: 67% center;
+    display: block;
+    will-change: transform;
+  }
+
+  .photo-break__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 16, 12, 0.25);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const section = document.querySelector(".photo-break") as HTMLElement | null;
+  const img = section?.querySelector("img") as HTMLImageElement | null;
+
+  if (section && img && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const viewH = window.innerHeight;
+      if (rect.bottom < 0 || rect.top > viewH) return;
+      const progress = (viewH - rect.top) / (viewH + rect.height);
+      img.style.transform = `translateY(${(progress - 0.5) * 8}%)`;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+</script>

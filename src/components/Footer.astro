@@ -1,0 +1,238 @@
+---
+---
+
+<footer class="footer" id="kontakt" role="contentinfo">
+  <div class="site-container">
+    <div class="footer__grid">
+
+      <div class="footer__brand">
+        <a href="/" class="footer__logo" aria-label="Restaurace Viktoria — domovská stránka">
+          Viktoria
+        </a>
+        <p class="footer__tagline">
+          Autentická ukrajinská kuchyně<br />v Praze
+        </p>
+      </div>
+
+      <div class="footer__col">
+        <p class="footer__label">Kontakt</p>
+        <address class="footer__address">
+          <div class="footer__block">
+            <p>Jabloňová 2136/11</p>
+            <p>106 00 Praha 10 – Záběhlice</p>
+          </div>
+          <div class="footer__block">
+            <p><a href="tel:+420601601216">+420 601 601 216</a></p>
+            <p><a href="tel:+420773673393">+420 773 673 393</a></p>
+          </div>
+          <div class="footer__block">
+            <p>
+              <a href="mailto:info@viktoria-restaurant.cz">
+                info@viktoria-restaurant.cz
+              </a>
+            </p>
+          </div>
+        </address>
+      </div>
+
+      <div class="footer__col">
+        <p class="footer__label">Otevírací doba</p>
+        <dl class="footer__hours">
+          <div class="footer__hours-row">
+            <dt>Po – Čt</dt>
+            <dd>11:00 – 21:00</dd>
+          </div>
+          <div class="footer__hours-row">
+            <dt>Pá</dt>
+            <dd>11:00 – 23:00</dd>
+          </div>
+          <div class="footer__hours-row">
+            <dt>So – Ne</dt>
+            <dd>11:00 – 02:00</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="footer__col">
+        <p class="footer__label">Sledujte nás</p>
+        <nav class="footer__social" aria-label="Sociální sítě">
+          <a
+            href="https://www.instagram.com/viktoria_restaurant_prague_/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram restaurace Viktoria"
+          >
+            Instagram
+          </a>
+        </nav>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {new Date().getFullYear()} Viktoria Restaurant. Všechna práva vyhrazena.</p>
+      <nav aria-label="Právní dokumenty">
+        <a href="#">Ochrana osobních údajů</a>
+        <span aria-hidden="true">·</span>
+        <a href="#">Obchodní podmínky</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-charcoal);
+    color: var(--color-cream);
+    padding-top: clamp(4rem, 8vw, 6.5rem);
+    padding-bottom: 2rem;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1.5fr 1.5fr;
+    gap: 2.5rem 3rem;
+    padding-bottom: clamp(3rem, 5vw, 4.5rem);
+    border-bottom: 1px solid rgba(247, 243, 238, 0.1);
+    margin-bottom: 2rem;
+  }
+
+  .footer__logo {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-cream);
+    text-decoration: none;
+    margin-bottom: 0.875rem;
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .footer__tagline {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: rgba(247, 243, 238, 0.5);
+    margin: 0;
+  }
+
+  .footer__label {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-terracotta);
+    margin: 0 0 0.875rem;
+  }
+
+  .footer__address {
+    font-style: normal;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(247, 243, 238, 0.65);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .footer__address p {
+    margin: 0;
+  }
+
+  .footer__address a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer__address a:hover {
+    color: var(--color-cream);
+  }
+
+  .footer__hours {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(247, 243, 238, 0.65);
+  }
+
+  .footer__hours-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .footer__hours-row dt {
+    min-width: 60px;
+  }
+
+  .footer__hours-row dd {
+    margin: 0;
+  }
+
+  .footer__social {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer__social a {
+    font-size: 0.9rem;
+    color: rgba(247, 243, 238, 0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-block;
+  }
+
+  .footer__social a:hover {
+    color: var(--color-cream);
+  }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: rgba(247, 243, 238, 0.3);
+    flex-wrap: wrap;
+  }
+
+  .footer__bottom p {
+    margin: 0;
+  }
+
+  .footer__bottom nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .footer__bottom a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer__bottom a:hover {
+    color: rgba(247, 243, 238, 0.6);
+  }
+
+  @media (max-width: 960px) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

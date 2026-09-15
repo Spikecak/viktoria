@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import Concept from "../components/Concept.astro";
+import Story from "../components/Story.astro";
+import PhotoBreak from "../components/PhotoBreak.astro";
+import Dishes from "../components/Dishes.astro";
+import Visit from "../components/Visit.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<BaseLayout
+  title="Viktoria Restaurant — Autentická Ukrajinská Kuchyně v Praze"
+  description="Viktoria Restaurant v Praze — autentická ukrajinská kuchyně, tradiční recepty, rodinná pohostinnost. Boršč, varenyky, holubtsi a více."
+>
+  <main>
+    <Hero />
+    <Concept />
+    <Story />
+    <PhotoBreak />
+    <Dishes />
+    <Visit />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,141 @@
+---
+---
+
+<section class="story section-padding" id="pribeh" aria-labelledby="story-heading">
+  <div class="site-container">
+    <div class="story__grid">
+
+      <div class="story__image" data-reveal>
+        <div class="parallax-media" data-parallax="8">
+          <img
+            src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=900&q=80&auto=format&fit=crop&crop=top"
+            alt="Šéfkuchařka Viktoria Kovalenko při práci v kuchyni"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="story__text" data-reveal data-reveal-delay="2">
+        <p class="eyebrow">Příběh</p>
+
+        <blockquote class="story__quote">
+          „Vařím to, co mi vařívala babička.<br />
+          Každé jídlo je vzpomínka."
+        </blockquote>
+
+        <div class="story__attribution">
+          <p class="story__name">Viktoria Kovalenko</p>
+          <p class="story__role">Zakladatelka a šéfkuchařka</p>
+        </div>
+
+        <p id="story-heading" class="story__body">
+          Viktoria vyrůstala v Kyjevě, kde ji babička zasvětila do tajů tradiční 
+          ukrajinské kuchyně. Po přestěhování do Prahy roku 2012 si splnila svůj sen — 
+          otevřela restauraci, která přináší autentické chutě její domoviny.
+        </p>
+        <p class="story__body">
+          Dnes vaří pro Pražany i cestující, kteří hledají upřímné, domácky připravené 
+          jídlo. Každý recept je originál — žádné kompromisy, jen čisté chutě.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .story {
+    background-color: var(--color-cream);
+  }
+
+  .story__grid {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: clamp(3rem, 8vw, 6rem);
+    align-items: center;
+  }
+
+  .story__image {
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+  }
+
+  .story__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .story__image:hover img {
+    transform: scale(1.03);
+  }
+
+  .story__text {
+    padding-left: clamp(0rem, 2vw, 1.5rem);
+  }
+
+  .story__quote {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2.125rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--color-charcoal);
+    margin: 1.25rem 0 1.75rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--color-terracotta);
+  }
+
+  .story__attribution {
+    margin-bottom: 2.25rem;
+  }
+
+  .story__name {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-charcoal);
+    margin: 0 0 0.2rem;
+  }
+
+  .story__role {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .story__body {
+    font-size: 1.0625rem;
+    line-height: 1.78;
+    color: var(--color-charcoal-soft);
+    max-width: 50ch;
+    margin: 0 0 1.25rem;
+  }
+
+  .story__body:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 960px) {
+    .story__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .story__text {
+      padding-left: 0;
+    }
+
+    .story__image {
+      max-width: 480px;
+    }
+
+    .story__body {
+      max-width: 60ch;
+    }
+  }
+</style>
