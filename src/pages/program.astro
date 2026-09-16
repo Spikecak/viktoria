@@ -671,6 +671,8 @@ const initialParts = eventParts(defaultEvent.date);
     display: flex;
     flex-direction: column;
     min-height: 0;
+    max-height: calc(100svh - 13rem);
+    overflow: hidden;
     touch-action: pan-y;
     user-select: none;
   }
@@ -719,7 +721,7 @@ const initialParts = eventParts(defaultEvent.date);
     right: 0;
     bottom: 0;
     z-index: 2;
-    padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.15rem, 3vw, 1.75rem) clamp(1.25rem, 3vw, 1.75rem);
+    padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.15rem, 3vw, 1.75rem) clamp(2.85rem, 6.5vw, 4.25rem);
     transition: opacity 0.42s ease;
   }
 

@@ -7,7 +7,7 @@ alwaysApply: true
 
 Astro + Tailwind cinematic site (Czech copy). Display: Bodoni Moda. Body: Work Sans. Brand mark is stacked VIKTORIA / letter-spread RESTAURANT (nav, footer, hero).
 
-Hero CTA, nav **Rezervace**, and `#rezervace` (`Visit.astro`) all land on **Vyhraďte si místo u stolu**. Primary actions: `tel:+420601601216` and `mailto:info@viktoria-restaurant.cz`. Second phone `+420 773 673 393`.
+Hero CTA, nav **Rezervace**, and `#rezervace` (`Visit.astro`) all land on **Zarezervujte si svůj stůl**. Primary actions: `tel:+420601601216` and `mailto:info@viktoria-restaurant.cz`. Second phone `+420 773 673 393`.
 
 Hours: Po–Čt 11:00–21:00, Pá 11:00–23:00, So–Ne 11:00–02:00. Address Jabloňová 2136/11, Praha 10–Záběhlice.
 

@@ -22,10 +22,12 @@
 
 <style>
   .photo-break {
-    height: clamp(380px, 55vh, 680px);
-    height: clamp(380px, 55svh, 680px);
+    --photo-break-h: clamp(380px, 55svh, 680px);
+    height: var(--photo-break-h);
     position: relative;
-    overflow: hidden;
+    timeline-scope: --photo-break;
+    view-timeline-name: --photo-break;
+    view-timeline-axis: block;
   }
 
   .photo-break__clip {
@@ -44,8 +46,34 @@
     object-fit: cover;
     object-position: 67% center;
     display: block;
-    will-change: transform;
     pointer-events: none;
+    will-change: transform;
+    animation-name: photo-uncover;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: --photo-break;
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes photo-uncover {
+    from {
+      transform: translate3d(0, -100vh, 0);
+    }
+    to {
+      transform: translate3d(0, var(--photo-break-h), 0);
+    }
+  }
+
+  @supports (height: 100lvh) {
+    @keyframes photo-uncover {
+      from {
+        transform: translate3d(0, -100lvh, 0);
+      }
+      to {
+        transform: translate3d(0, var(--photo-break-h), 0);
+      }
+    }
   }
 
   .photo-break__overlay {
@@ -91,6 +119,8 @@
   @media (prefers-reduced-motion: reduce) {
     .photo-break img {
       height: 100%;
+      animation: none;
+      transform: none;
       will-change: auto;
     }
   }
@@ -102,13 +132,74 @@
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (section && img && !reduced) {
-    const onScroll = () => {
-      const top = section.getBoundingClientRect().top;
-      img.style.transform = `translate3d(0, ${-top}px, 0)`;
+    let rafId = 0;
+    let watching = false;
+
+    const lockToViewport = () => {
+      img.style.transform = `translate3d(0, ${-section.getBoundingClientRect().top}px, 0)`;
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("orientationchange", onScroll);
-    onScroll();
+    const stopRaf = () => {
+      watching = false;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = 0;
+    };
+
+    const rafLoop = () => {
+      if (!watching) return;
+      lockToViewport();
+      rafId = requestAnimationFrame(rafLoop);
+    };
+
+    const bindViewTimeline = () => {
+      const ViewTimelineCtor = (
+        window as Window & {
+          ViewTimeline?: new (options: { subject: Element; axis?: string }) => AnimationTimeline;
+        }
+      ).ViewTimeline;
+      if (typeof ViewTimelineCtor !== "function") return false;
+
+      img.getAnimations().forEach((animation) => animation.cancel());
+      img.style.animation = "none";
+
+      const from = -img.offsetHeight;
+      const to = section.offsetHeight;
+      const keyframes = [
+        { transform: `translate3d(0, ${from}px, 0)` },
+        { transform: `translate3d(0, ${to}px, 0)` },
+      ];
+      const timeline = new ViewTimelineCtor({
+        subject: section,
+        axis: "block",
+      });
+      const base = {
+        fill: "both" as FillMode,
+        easing: "linear",
+        duration: 1,
+        timeline,
+      };
+
+      try {
+        img.animate(keyframes, { ...base, rangeStart: "cover 0%", rangeEnd: "cover 100%" });
+      } catch {
+        img.animate(keyframes, { ...base, rangeStart: "cover", rangeEnd: "cover" });
+      }
+      return true;
+    };
+
+    const bind = () => {
+      stopRaf();
+      if (bindViewTimeline()) return;
+
+      img.style.animation = "none";
+      watching = true;
+      rafLoop();
+    };
+
+    bind();
+    window.addEventListener("resize", bind, { passive: true });
+    window.addEventListener("orientationchange", () => {
+      requestAnimationFrame(bind);
+    });
   }
 </script>
